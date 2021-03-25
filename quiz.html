@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+        <!-- Bootstrap CSS -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+            integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+            crossorigin="anonymous"
+        >
+        <link href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@300&display=swap" rel="stylesheet">
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+            crossorigin="anonymous"
+        >
+        <link rel="stylesheet" href="Style/style.css">
+        <title>Quiz - Lets test You</title>
+        <style>
+    .check .navitem ul li{
+        color:black;
+    }
+        </style>
+    </head>
+    <body style="color: white;" ng-app="course" ng-controller="control">
+        <div ng-show="resultDiv">
+            <div class="container">
+                <h1 class="text-center mt-5">Take The Quiz</h1>
+                <div class="row mt-5">
+                    <div class="col-lg-6 col-md-6 col-sm-6 text-center">
+                        Progress
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <button
+                                    class="btn btn-sm ml-1"
+                                    ng-repeat="question in python"
+                                    ng-class="{'btn-danger':(question.selected) === null, 'btn-primary' : (question.selected) !== null}"
+                                    ng-click="setActiveQuestion($index)"
+                                ></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 text-center">
+                        Legends
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label>UnAnswered:</label>
+                                <button class="btn btn-lg btn-danger ml-2"></button>
+                                <br>
+                                <label>Answered:</label>
+                                <button class="btn btn-lg btn-primary ml-2"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt-2">
+                    <div class="alert  alert-danger" ng-show="error">
+                        Error You have not Answered all the questions...!!
+                        <button class="close" ng-click="error = false">&times</button>
+                    </div>
+                    <h1>Question</h1>
+                    <hr style="border: 1px solid white;">
+                    <div class="card" data-aos="flip-left">
+                        <div class="card-title mt-3 ml-2">
+                            {{activeQuestion+1+'. '+ python[activeQuestion].question+' ?'}}
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div
+                                    class="col-md-6"
+                                    ng-repeat="x in python[activeQuestion].possibility"
+                                    style="border: 1px solid white ;
+                            border-radius: 5px ; padding: 8px 10px;
+                            
+                            cursor: pointer; 
+                            "
+                                    ng-class="{
+                                'bg-info': $index === python[activeQuestion].selected
+                            }"
+                                    ng-click="setAns($index)"
+                                >
+                                    <h6>{{x.ans}}</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-md btn-warning" ng-click="questionAnswered()">
+                                Continue
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5" ng-show="finalise">
+            Do you wish to submit your Answers ?
+            <button class="btn btn-success" ng-click="finalizeAns()">Yes</button>
+            <button class="btn btn-danger" ng-click="finalise = false">No</button>
+        </div>
+        <div class="text-center mt-3" ng-show="result_show">
+            <div class="container mt-3" style=" background-color:white; opacity: 0.5;">
+                <nav class="check">
+                    <div class="title">
+                        <strong>Quizzes</strong>
+                    </div>
+                    <div class="nav-item">
+                        <ul>
+                            <li>
+                                <a href="#">Python</a>
+                            </li>
+                            <li>
+                                <a href="#">HTML</a>
+                            </li>
+                            <li>
+                                <a href="">php</a>
+                            </li>
+                            <li>
+                                <a href="">C</a>
+                            </li>
+                            <li>
+                                <a href="">Current Affairs</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <h1>Results:</h1>
+            <h3>Final Score : {{score}}</h3>
+            <div class="row mt-3">
+                <div class="col-lg-6 col-md-6 col-sm-6 text-center">
+                    Progress
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <button
+                                class="btn btn-md ml-1"
+                                ng-repeat="question in python"
+                                ng-class="{'btn-success':question.correct == question.possibility[question.selected].ans.valueOf(),'btn-danger':question.correct != question.possibility[question.selected].ans.valueOf()}"
+                                ng-click="result($index)"
+                            ></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 text-center">
+                    Legends
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label>Correct:</label>
+                            <button class="btn btn-lg btn-success ml-2"></button>
+                            <br>
+                            <label>InCorrect:</label>
+                            <button class="btn btn-lg btn-danger ml-2"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-3">
+                <div class="alert  alert-danger" ng-show="error">
+                    Error You have not Answered all the questions...!!
+                    <button class="close" ng-click="error = false">&times</button>
+                </div>
+                <h2>Question</h2>
+                <div class="card">
+                    <div class="card-title mt-3 ml-2">
+                        {{resultActive+1+'. '+ python[resultActive].question+' ?'}}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div
+                                class="col-md-6"
+                                ng-class="{ 'btn-danger':python[resultActive].possibility[$index].ans.valueOf() != python[resultActive].correct && python[resultActive].possibility[$index].ans.valueOf() == python[resultActive].possibility[python[resultActive].selected].ans.valueOf() , 
+                            'btn-success': python[resultActive].possibility[$index].ans.valueOf() == python[resultActive].correct
+                            }"
+                                ng-repeat="x in python[resultActive].possibility"
+                                style="border: 1px solid black ;
+                        border-radius: 5px ; padding: 8px 10px;
+                        cursor: pointer; 
+                        "
+                            >
+                                <h6>
+                                    {{x.ans}}
+                                    <span ng-show="python[resultActive].possibility[$index].ans.valueOf() != python[resultActive].correct && python[resultActive].possibility[$index].ans.valueOf() == python[resultActive].possibility[python[resultActive].selected].ans.valueOf() ">Your Answer</span>
+                                    <span ng-show=" python[resultActive].possibility[$index].ans.valueOf() == python[resultActive].correct ">Correct Answer</span>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-md btn-warning" ng-click="resultAnswered()">
+                            Continue
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="Logic/quiz.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script>
+        AOS.init({
+            offset: 300,
+            duration: 1000,
+            once: false,
+            
+        });
+        </script>
+    </body>
+</html>

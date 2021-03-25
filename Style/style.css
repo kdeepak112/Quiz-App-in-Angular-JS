@@ -1,0 +1,127 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Grenze Gotisch', cursive;
+    background:linear-gradient(to right,#28313B,#485461)
+}
+
+.card{
+    background: transparent;
+    border:1px solid white;
+}
+
+.card-body{
+    color:white;
+}
+
+.top{
+    background-image: url(Images/Home.jpg);
+}
+
+.navbar{
+    position: absolute;
+    background: transparent!important;
+    width: 100%;
+    z-index: 10;
+    
+}
+
+.check {
+    
+    color:black;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.nav-item {
+    padding: 5px;
+}
+
+.title {
+    font-size: 3rem;
+    margin: 0.2rem;
+}
+
+.nav-item ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item li {
+    list-style: none;
+}
+
+.nav-item li a {
+    text-decoration: none;
+    padding: 1rem;
+    color:white;
+    display: block;
+    font-size: 1.4rem;
+}
+
+.type-text{
+    
+    color:black;
+    
+    height: 35vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.type-text p {
+    font-size: 3rem;
+    padding: 0.5rem;
+    font-weight: bold;
+    letter-spacing: 0.1rem;
+    text-align: center;
+    overflow: hidden;
+}
+
+.type-text p span.typed-text {
+    font-weight: normal;
+    color: #dd7732;
+}
+
+.type-text p span.cursor {
+    display: inline-block;
+    background-color: #ccc;
+    margin-left: 0.1rem;
+    width: 3px;
+    animation: blink 1s infinite;
+}
+
+.type-text p span.cursor.typing {
+    animation: none;
+}
+
+@keyframes blink {
+    0% {
+        background-color: #ccc;
+    }
+    49% {
+        background-color: #ccc;
+    }
+    50% {
+        background-color: transparent;
+    }
+    99% {
+        background-color: transparent;
+    }
+    100% {
+        background-color: #ccc;
+    }
+}
+
+.intro{
+    font-size:2rem;
+    color:white;
+    
+}
